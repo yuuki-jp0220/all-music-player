@@ -211,7 +211,9 @@ function playURL(){
  }
 
  else{
-  service="未対応のサービス";
+  // 汎用モード：外部埋め込みを拒否していないサイトなら表示を試す
+  embed=u.href;
+  service="その他の動画・音楽サイト";
  }
 
  openLink.href=u.href;
@@ -230,10 +232,7 @@ function playURL(){
 
  title.textContent="🎧 "+service;
  statusText.textContent=
-  service+" のプレイヤーを読み込みました。再生ボタンを押してください。";
-  if(service==="YouTube" && location.protocol==="file:"){
-   statusText.textContent="YouTubeを再生するにはHTTPSまたはlocalhostで開いてください（file://ではエラー153になることがあります）。";
-  }
+  service+" の読み込みを試しています。再生できない場合は「元のサービスで開く」を押してください。";
 }
 
 urlInput.addEventListener("keydown",e=>{
