@@ -199,6 +199,18 @@ function playURL(){
   service="Apple Music";
  }
 
+ // TikTok（動画IDがURLに含まれる通常の動画リンク）
+ else if(host==="tiktok.com"||host==="www.tiktok.com"||
+         host==="m.tiktok.com"){
+  const match=path.match(/\\/video\\/(\\d+)/);
+  if(match){
+   embed="https://www.tiktok.com/player/v1/"+match[1];
+   service="TikTok";
+  }else{
+   service="TikTok";
+  }
+ }
+
  // ニコニコ動画
  else if(host==="www.nicovideo.jp"||
          host==="nicovideo.jp"){
@@ -211,18 +223,20 @@ function playURL(){
  }
 
  else{
-  // 汎用モード：外部埋め込みを拒否していないサイトなら表示を試す
-  embed=u.href;
-  service="その他の動画・音楽サイト";
+  // 汎用サイトは埋め込み可否がサービスごとに異なるため、
+  // 無理にiframe表示せず元サイトへのリンクを案内する
+  service="この動画サービス";
  }
 
  openLink.href=u.href;
  openLink.classList.remove("hidden");
 
  if(!embed){
+  player.src="about:blank";
   player.classList.add("hidden");
+  player.classList.remove("audio");
   statusText.textContent=
-   service+"：埋め込みに対応していないURLです。元のサイトで開いてください。";
+   service+"はページ内再生に対応していないか、短縮URLのため動画を特定できません。「元のサービスで開く」から再生してください。";
   return;
  }
 
